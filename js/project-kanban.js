@@ -11,7 +11,13 @@ class Kanban {
         this.tasks = [];
         this.draggedTask = null;
         this.editingTaskId = null;
-        
+
+        // Paramètres de tri
+        this.sortBy = 'creation_date';
+        this.sortOrder = 'desc';
+        this.filterPriority = 'all';
+
+
         this.init(projectId);
     }
 
@@ -94,13 +100,41 @@ class Kanban {
         
         console.log("✅ Colonnes réinitialisées");
 
-        await Promise.all(
-            this.tasks.map(async (task) => {
+        // Récupérer les tâches filtrées et triées
+        const sortedTasks = this.getFilteredAndSortedTasks();
+
+        // Grouper par statut
+        const tasksByStatus = {
+            'todo': [],
+            'in-progress': [],
+            'done': []
+        };
+
+        sortedTasks.forEach(task => {
+            if (tasksByStatus[task.status]) {
+                tasksByStatus[task.status].push(task);
+            }
+        });
+
+        // Afficher dans chaque colonne
+        for (const [status, tasks] of Object.entries(tasksByStatus)) {
+            const column = document.getElementById(`column-${status}`);
+            
+            for (const task of tasks) {
                 const card = await this.createTaskCard(task);
-                const column = document.getElementById(`column-${task.status}`);
                 column.appendChild(card);
-            })
-        );
+            }
+        }
+
+        // await Promise.all(
+        //     this.tasks.map(async (task) => {
+        //         const card = await this.createTaskCard(task);
+        //         const column = document.getElementById(`column-${task.status}`);
+        //         column.appendChild(card);
+        //     })
+        // );
+
+        console.log("✅ Tâches ajoutées aux colonnes (triées)");
 
         console.log("✅ Tâches ajoutées aux colonnes");
     }
@@ -191,6 +225,22 @@ class Kanban {
             this.openCreateModal();
         });
 
+        // Contrôles de tri
+        document.getElementById('sort-by').addEventListener('change', (e) => {
+            this.sortBy = e.target.value;
+            this.renderKanban();
+        });
+
+        document.getElementById('sort-order').addEventListener('change', (e) => {
+            this.sortOrder = e.target.value;
+            this.renderKanban();
+        });
+
+        document.getElementById('filter-priority').addEventListener('change', (e) => {
+            this.filterPriority = e.target.value;
+            this.renderKanban();
+        });
+
         // Fermeture modal
         document.querySelectorAll('.modal-close').forEach(btn => {
             btn.addEventListener('click', () => this.closeModal());
@@ -271,6 +321,61 @@ class Kanban {
         }
 
         this.draggedTask = null;
+    }
+
+    // ============================================
+    // 🔄 TRI ET FILTRAGE
+    // ============================================
+
+    getFilteredAndSortedTasks() {
+        let tasks = [...this.tasks];
+
+        // 1️⃣ Filtrer par priorité
+        if (this.filterPriority !== 'all') {
+            tasks = tasks.filter(task => task.priority === this.filterPriority);
+        }
+
+        // 2️⃣ Trier
+        tasks.sort((a, b) => {
+            let comparison = 0;
+
+            switch (this.sortBy) {
+                case 'creation_date':
+                    comparison = new Date(a.creation_date) - new Date(b.creation_date);
+                    break;
+
+                case 'deadline':
+                    // Mettre les tâches sans deadline à la fin
+                    if (!a.deadline && !b.deadline) comparison = 0;
+                    else if (!a.deadline) comparison = 1;
+                    else if (!b.deadline) comparison = -1;
+                    else comparison = new Date(a.deadline) - new Date(b.deadline);
+                    break;
+
+                case 'priority':
+                    const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
+                    comparison = (priorityOrder[b.priority] || 2) - (priorityOrder[a.priority] || 2);
+                    break;
+
+                case 'title':
+                    comparison = a.title.localeCompare(b.title, 'fr', { sensitivity: 'base' });
+                    break;
+
+                case 'last_update_date':
+                    const dateA = a.last_update_date || a.creation_date;
+                    const dateB = b.last_update_date || b.creation_date;
+                    comparison = new Date(dateA) - new Date(dateB);
+                    break;
+
+                default:
+                    comparison = 0;
+            }
+
+            // Inverser si ordre décroissant
+            return this.sortOrder === 'desc' ? -comparison : comparison;
+        });
+
+        return tasks;
     }
 
     // ============================================

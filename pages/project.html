@@ -22,6 +22,39 @@
             <p id="project-description"></p>
         </div>
 
+        <!-- Contrôles de tri et filtres -->
+        <div class="task-controls">
+            <div class="control-group">
+                <label for="sort-by">Trier par :</label>
+                <select id="sort-by" class="form-select">
+                    <option value="creation_date">Date de création</option>
+                    <option value="deadline">Échéance</option>
+                    <option value="priority">Priorité</option>
+                    <option value="title">Titre (A-Z)</option>
+                    <option value="last_update_date">Dernière modification</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="sort-order">Ordre :</label>
+                <select id="sort-order" class="form-select">
+                    <option value="asc">Croissant</option>
+                    <option value="desc">Décroissant</option>
+                </select>
+            </div>
+            
+            <!-- Filtre priorité (optionnel) -->
+            <div class="control-group">
+                <label for="filter-priority">Priorité :</label>
+                <select id="filter-priority" class="form-select">
+                    <option value="all">Toutes</option>
+                    <option value="high">🔴 Haute</option>
+                    <option value="medium">🟡 Moyenne</option>
+                    <option value="low">🟢 Basse</option>
+                </select>
+            </div>
+        </div>
+
         <!-- Kanban Board -->
         <div class="kanban-container">
             <!-- Colonne À faire -->
