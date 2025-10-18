@@ -16,6 +16,11 @@ function initEventListeners() {
   document.getElementById('form-task').addEventListener('submit', (e) => {
       handleSubmitTask(e);
   });
+
+  // Bouton supprimer
+  document.getElementById('btn-delete-task').addEventListener('click', () => {
+    handleDeleteTask();
+});
 }
 
 async function loadStats() {
@@ -300,4 +305,26 @@ async function handleSubmitTask(e) {
       console.error('❌ Erreur sauvegarde tâche:', error);
       alert('Erreur lors de la sauvegarde');
   }
+}
+  async function handleDeleteTask() {
+    if (!confirm('Supprimer cette tâche ?')) return;
+    const taskId = document.getElementById('task-metadata').dataset.id;
+
+    try {
+        const req = await window.app.tasks.delete(taskId);
+
+        if(req.success) {
+            console.log('🗑️ ✅ : Tâche avec l\'id', taskId, 'supprimée');
+            showNotification("Tâche supprimée");
+            
+            await loadStats();
+            this.closeModal();
+        } else {
+            console.error('❌ Erreur suppression :', req.error);
+            showNotification("La tâche n'a pas pu être supprimée", 'error');
+        }
+    } catch (error) {
+        console.error('❌ Erreur suppression:', error);
+        alert('Erreur lors de la suppression');
+    }
 }

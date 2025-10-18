@@ -1,37 +1,36 @@
 // Composants réutilisables
 
-// Sidebar commune
 function getSidebar(activePage) {
-    return `
+  // Configuration des éléments du menu
+  const menuItems = [
+      { id: 'dashboard', icon: '🏠', label: 'Dashboard', href: 'index.html' },
+      { id: 'tasks', icon: '📋', label: 'Toutes les tâches', href: 'tasks.html' },
+      { id: 'timeline', icon: '📅', label: 'Timeline', href: 'timeline.html' },
+      { id: 'projects', icon: '📂', label: 'Projets', href: 'projects.html' },
+      { id: 'settings', icon: '⚙️', label: 'Paramètres', href: 'settings.html' }
+  ];
+
+  // Générer le HTML du menu
+  const menuHTML = menuItems.map(item => `
+      <li>
+          <a href="${item.href}" class="${activePage === item.id ? 'active' : ''}">
+              <span class="nav-icon">${item.icon}</span>
+              <span class="nav-label">${item.label}</span>
+          </a>
+      </li>
+  `).join('');
+
+  return `
       <nav class="sidebar">
-        <div class="logo">
-          <img src="../assets/icon256.png" alt="logo"> <h1>OPAC</h1>
-        </div>
-        <ul class="nav-menu">
-          <li>
-            <a href="#" onclick="navigateTo('index')" class="${activePage === 'index' ? 'active' : ''}">
-              🏠 Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="#" onclick="navigateTo('tasks')" class="${activePage === 'tasks' ? 'active' : ''}">
-              📚 Tâches
-            </a>
-          </li>
-          <li>
-            <a href="#" onclick="navigateTo('projects')" class="${activePage === 'projects' ? 'active' : ''}">
-              📂 Projets
-            </a>
-          </li>
-          <li>
-            <a href="#" onclick="navigateTo('settings')" class="${activePage === 'settings' ? 'active' : ''}">
-              ⚙️ Paramètres
-            </a>
-          </li>
-        </ul>
+          <div class="logo">
+            <img src="../assets/icon256.png" alt="logo"> <h1>OPAC</h1>
+          </div>
+          <ul class="nav-menu">
+              ${menuHTML}
+          </ul>
       </nav>
-    `;
-  }
+  `;
+}
   
   // Header commun
   function getHeader(title) {

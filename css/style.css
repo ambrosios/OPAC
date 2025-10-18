@@ -453,3 +453,176 @@ body {
     gap: 1rem;
   }
 }
+
+/* Styles pour les contrôles de tri */
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.task-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.control-group label {
+  font-size: 0.9rem;
+  color: #666;
+  white-space: nowrap;
+}
+
+.form-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.form-select:hover {
+  border-color: #667eea;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-actions {
+      flex-direction: column;
+      align-items: stretch;
+  }
+  
+  .task-controls {
+      width: 100%;
+  }
+  
+  .control-group {
+      flex: 1;
+      min-width: 150px;
+  }
+}
+
+
+
+/* =====================
+  MACRO KANBAN
+====================== */
+/* Filtres */
+/* .filters-container {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.filter-select, .search-input {
+  padding: 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.search-input {
+  flex: 1;
+}
+
+/* Tag projet sur la carte */
+/* .card-project-tag {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+} */
+
+/* Champ readonly dans le modal */
+/* .readonly-field {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+} */
+
+/* ========================================
+ STYLES DRAG & DROP
+ ======================================== */
+
+/* Carte en cours de drag */
+.kanban-card.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+  transform: rotate(5deg);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Colonne survolée pendant le drag */
+.kanban-column.drag-over {
+  background-color: rgba(52, 152, 219, 0.1);
+  border: 2px dashed #3498db;
+}
+
+.kanban-column.drag-over .kanban-cards {
+  background-color: rgba(52, 152, 219, 0.05);
+}
+
+/* Cursor pendant le drag */
+.kanban-card[draggable="true"] {
+  cursor: grab;
+}
+
+.kanban-card[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+/* Notifications */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateX(400px);
+  transition: transform 0.3s ease-in-out;
+  z-index: 10000;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification-success {
+  background-color: #27ae60;
+}
+
+.notification-error {
+  background-color: #e74c3c;
+}
+
+.notification-info {
+  background-color: #3498db;
+}
+
