@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[OPAC] Toutes les tâches </title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/kanban.css">
+</head>
+<body>
+    <!-- Header -->
+    <div id="sidebar-container"></div>
+    <main class="main-content">
+        <div id="header-container"></div>
+        <section class="page-header">
+            <button id="btn-add-task" class="btn btn-primary">+ Nouvelle tâche</button>
+          </section>
+        <!-- <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <button onclick="window.location.href='dashboard.html'" class="btn-back">
+                        ← Retour aux projets
+                    </button>
+                    <h1 id="project-name">Chargement...</h1>
+                </div>
+                <div class="header-right">
+                    <button id="btn-add-task" class="btn-primary">+ Nouvelle tâche</button>
+                </div>
+            </div>
+        </header> -->
+
+        <!-- Project Info -->
+        <div class="project-info">
+            <p id="project-description"></p>
+        </div>
+
+        <!-- Kanban Board -->
+        <div class="kanban-container">
+            <!-- Colonne À faire -->
+            <div class="kanban-column" data-status="todo">
+                <div class="column-header">
+                    <h2>📋 À faire</h2>
+                    <span class="task-count" id="count-todo">0</span>
+                </div>
+                <div class="column-content" id="column-todo" data-status="todo">
+                    <!-- Tâches ici -->
+                </div>
+            </div>
+
+            <!-- Colonne En cours -->
+            <div class="kanban-column" data-status="in-progress">
+                <div class="column-header">
+                    <h2>🚀 En cours</h2>
+                    <span class="task-count" id="count-in-progress">0</span>
+                </div>
+                <div class="column-content" id="column-in-progress" data-status="in-progress">
+                    <!-- Tâches ici -->
+                </div>
+            </div>
+
+            <!-- Colonne Terminé -->
+            <div class="kanban-column" data-status="done">
+                <div class="column-header">
+                    <h2>✅ Terminé</h2>
+                    <span class="task-count" id="count-done">0</span>
+                </div>
+                <div class="column-content" id="column-done" data-status="done">
+                    <!-- Tâches ici -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Ajout/Édition Tâche -->
+        <div id="modal-task" class="modal"></div>
+    </main>
+    <script src="../js/common.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/project-kanban.js"></script>
+    <script>
+        // Initialiser les composants pour cette page
+        initComponents('tasks', '📚 Toutes les tâches');
+    </script>
+</body>
+</html>
