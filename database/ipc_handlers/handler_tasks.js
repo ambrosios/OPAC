@@ -62,7 +62,7 @@ module.exports = (db, ipcMain) => {
       try {
         const task = db.prepare(
           `SELECT * FROM tasks
-          WHERE deadline < datetime('now', '+2 days')
+          WHERE datetime(deadline) < datetime('now', '+2 days')
           AND status != 'done'
           ORDER BY deadline ASC
         `).all();
@@ -143,6 +143,16 @@ module.exports = (db, ipcMain) => {
           return { success: false, error: 'Tâche introuvable' };
         }
         
+        return { success: true };
+      } catch (error) {
+        return { success: false, error: error.message };
+      }
+    });
+  
+    ipcMain.handle('tasks:deleteProjectTasks', async (event, project_id) => {
+      try {
+        const stmt = db.prepare('DELETE FROM tasks WHERE project_id = ?');
+        const result = stmt.run(project_id);
         return { success: true };
       } catch (error) {
         return { success: false, error: error.message };

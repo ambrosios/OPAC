@@ -482,7 +482,7 @@ class Kanban {
         const taskData = {
             title: document.getElementById('task-title').value.trim(),
             description: document.getElementById('task-description').value.trim(),
-            deadline: new Date(document.getElementById('task-dueDate').value).getTime(),
+            deadline: document.getElementById('task-dueDate').value,
             status: document.getElementById('task-status').value,
             priority: document.getElementById('task-priority').value,
             project_id: this.projectId

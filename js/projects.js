@@ -230,16 +230,24 @@ class Projects {
     }
 
     async deleteProject(id) {
-        const req = await window.app.projects.delete(id);
-
-        if(req.success) {
-            console.log("🗑️ Projet n°", id, "supprimé.");
+        let go = confirm("Voulez-vous supprimer le projet et toutes ses tâches ? (irréversible)");
+        if(go) {
+            const reqProject = await window.app.projects.delete(id);
+            const reqTasks = await window.app.tasks.deleteProjectTasks(id);
+    
+            if(reqProject.success && reqTasks.success) {
+                console.log("🗑️ Projet n°", id, "supprimé.");
+                showNotification('Projet supprimé !');
+            } else {
+                showNotification('Erreur: ' + reqProject.error.message, 'error');
+                showNotification('Erreur: ' + reqTasks.error.message, 'error');
+            }
+    
+            const projects = new Projects();
+            await projects.showProjects();
         } else {
-            showNotification('Erreur: ' + error.message, 'error');
+            alert("Suppression annulée");
         }
-
-        const projects = new Projects();
-        await projects.showProjects();
     }
 
     // Afficher le modal de modification
@@ -365,6 +373,7 @@ function resetProjectModal() {
     document.getElementById('modalProjectId').value = ""
     document.getElementById('modalProjectName').value = ""
     document.getElementById('modalProjectDescription').innerHTML = ""
+    document.getElementById('modalProjectDescription').value = ""
 
     document.getElementById('modal-label-edit').style.display = "none";
     document.getElementById('modal-label-create').style.display = "block";
@@ -395,7 +404,8 @@ async function saveProject() {
             await p.updateDescription(document.querySelector('#modalProjectDescription').value);
         }
 
-        hideModal('modal-project')
+        resetProjectModal();
+        hideModal('modal-project');
 
         const projects = new Projects();
         projects.showProjects();

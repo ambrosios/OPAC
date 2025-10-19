@@ -43,3 +43,7 @@
     margin: 0;
     grid-template-columns: inherit;
   }
+
+  .column-content:empty::after {
+    content: "Aucune tâche";
+}

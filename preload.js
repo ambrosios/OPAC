@@ -35,6 +35,7 @@ contextBridge.exposeInMainWorld('app', {
     updateLastUpdateDate: (id, date) => ipcRenderer.invoke('tasks:updateLastUpdateDate', id, date),
     updateLastStatusChangeDate: (id, date) => ipcRenderer.invoke('tasks:updateLastStatusChangeDate', id, date),
     delete: (id) => ipcRenderer.invoke('tasks:delete', id),
+    deleteProjectTasks: (projectId) => ipcRenderer.invoke('tasks:deleteProjectTasks', projectId),
     clearAll: () => ipcRenderer.invoke('tasks:clearAll')
   }
 });

@@ -39,7 +39,8 @@ async function loadStats() {
   }
 
   const projects = await window.app.projects.getAll();
-        
+    
+  document.querySelector('#modal-task #task-project').innerHTML = "";
   projects.data.forEach(p => {
       const option = document.createElement('option');
       option.value = p.id;
